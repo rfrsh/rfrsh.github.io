@@ -12,13 +12,29 @@ class Select {
             sheet.saveSheet();
             sheet.deleteListeners(sheet.mainTable,sheet.bindTdClick,sheet.mainInput,sheet.bindInputClick);
 
+            //console.log(select.value);
 
             document.querySelector('#table').innerHTML ='<div id="top-nav"><div data-name="trow"></div></div><div data-name="tcol-table"><div data-name="tcol"></div><div data-name="table"></div></div>';
             var divIdTable = document.querySelector('div#table');
             divIdTable.scrollTop = 0;
             divIdTable.scrollLeft = 0;
 
-            
+            /*document.querySelector('div[data-name="table"]').innerHTML = '';
+             document.querySelector('div[data-name="tcol"]').innerHTML = '';
+             document.querySelector('div[data-name="trow"]').innerHTML = '';
+
+             var divIdTable = document.querySelector('div#table');
+             divIdTable.style.width = "1300px";
+             divIdTable.scrollTop = 0;
+             divIdTable.scrollLeft = 0;
+             divIdTable.style.height = "500px";
+             var divTLet = document.querySelector('div[data-name="trow"]');
+             var divTLet1 = document.querySelector('div[data-name="tcol-table"]');
+             var divTNum = document.querySelector('div[data-name="tcol"]');
+             divTLet.style.width = "2000px";
+             divTLet1.style.width = "2060px";
+             divTLet1.style.height = "940px";
+             divTNum.style.height = "940px";*/
 
 
 
@@ -58,7 +74,8 @@ class Select {
 
     getSelectData(){
 
-       
+        //this.sheetList = {1:'Sher', 2:'Sheet2',3:'Sheet3',4:'ss'};
+        //console.log(this.sheetList);
         if(localStorage['sheetList']){
             this.sheetList = JSON.parse(localStorage['sheetList']);
         }
@@ -117,7 +134,21 @@ class Select {
             var select = document.querySelector('select[data-select="sel"]');
             select.value = +Object.keys(this.sheetList)[Object.keys(this.sheetList).length-1];
 
-            
+            /*document.querySelector('div[data-name="table"]').innerHTML = '';
+             document.querySelector('div[data-name="tcol"]').innerHTML = '';
+             document.querySelector('div[data-name="trow"]').innerHTML = '';
+             var divIdTable = document.querySelector('div#table');
+             divIdTable.style.width = "1300px";
+             divIdTable.scrollTop = 0;
+             divIdTable.scrollLeft = 0;
+             divIdTable.style.height = "500px";
+             var divTLet = document.querySelector('div[data-name="trow"]');
+             var divTLet1 = document.querySelector('div[data-name="tcol-table"]');
+             var divTNum = document.querySelector('div[data-name="tcol"]');
+             divTLet.style.width = "2000px";
+             divTLet1.style.width = "2060px";
+             divTLet1.style.height = "940px";
+             divTNum.style.height = "940px";*/
             document.querySelector('#table').innerHTML ='<div id="top-nav"><div data-name="trow"></div></div><div data-name="tcol-table"><div data-name="tcol"></div><div data-name="table"></div></div>';
             var divIdTable = document.querySelector('div#table');
             divIdTable.scrollTop = 0;

@@ -12,12 +12,14 @@ class Sheet {
     }
 
     init(){
+        //debugger;
         this.getSheetData();
         this.renderSheet();
 
         var table = document.querySelector('#table');
 
-        table.addEventListener('scroll',this.addNewRowsAndColumns.bind(this));
+        //console.log(this.dataObj);
+        table.addEventListener('scroll',this.addRowsAndCells.bind(this));
 
         var tdAttr;
         var cellLetter, cellNumber;
@@ -41,12 +43,16 @@ class Sheet {
             if(e.target.localName=='td') {
 
 
+                //var mainTable = document.querySelector('.main-table');
                 mainTable.removeEventListener('click',bindTdClick);
 
                 var td = e.target;
                 tdAttr = td.getAttribute("data-cell");
+                //console.log(tdAttr);
 
+                //console.log(td.parentElement.rowIndex);
                 cellLetter = document.querySelectorAll('div[data-name="trow"] div')[td.cellIndex];
+                //console.log('cellLetter1', cellLetter);
                 cellLetter.classList.add("cell-selected");
                 cellNumber = document.querySelectorAll('div[data-name="tcol"] div')[td.parentElement.rowIndex];
                 cellNumber.classList.add("cell-selected");
@@ -61,9 +67,11 @@ class Sheet {
                 mainInput.value = input.value;
                 input.focus();
 
+                //if(input.value.charAt(0) == "=") {
                     if (input.value != undefined) {
                         if(input.value.charAt(0) == "=") {
                             var highlighting = input.value.substring(1).split(/\+|\*|\/|-/);
+                            //console.log(highlighting);
                             for (var l = 0; l < highlighting.length; l++) {
                                 var hi = "td[data-cell=" + '"' + highlighting[l].toUpperCase() + '"]';
                                 var hil = document.querySelector(hi);
@@ -90,6 +98,7 @@ class Sheet {
                                     if (hi2 != null) hi2.classList.add(formulaSelected);
                                 }
 
+                                //console.log('ddd');
                             }
                         }
                         mainInput.value = input.value;
@@ -109,12 +118,15 @@ class Sheet {
 
                     input.addEventListener('blur', cellClick);
                     function cellClick(e) {
+                        //input.removeEventListener('blur', cellClick);
                         input.focus();
                         if(input.value.charAt(0) == "=") {
 
+                            //if()
 
                             if (clCell == undefined)return;
                             if (clCell == '')return;
+                            //if (input.value=='')return;
 
                             if(input.value.charAt(input.value.length-1).search(/\+|\-|\*|\/|\=/)!=0){
                                 var foundMin = input.value.lastIndexOf('+');
@@ -143,6 +155,7 @@ class Sheet {
                     if (e.which == 13) {
                         cellLetter.classList.remove("cell-selected");
                         cellNumber.classList.remove("cell-selected");
+                        //this.dataObj[cell] = e.target.value;
 
 
                         if(e.target.value!=undefined){
@@ -177,6 +190,7 @@ class Sheet {
                     if (e.keyCode === 27) {
                         cellLetter.classList.remove("cell-selected");
                         cellNumber.classList.remove("cell-selected");
+                        //this.dataObj[cell] = e.target.value;
 
                         if (e.target.value.charAt(0) == "=") {
                             if(this.dataObj[cell] == undefined) td.innerHTML = '';
@@ -216,11 +230,17 @@ class Sheet {
             mainInput.removeEventListener('click', bindInputClick);
 
 
-           
+            if(cellLetter!=undefined) {
+                //cellLetter.classList.remove("cell-selected");
+                //cellNumber.classList.remove("cell-selected");
+            }
+
+
 
 
             var adSrting = 'td[data-cell='+tdAttr+']';
             var adSrting1 = adSrting + ' input';
+            //console.log('111',adSrting,adSrting1);
             var td1 = document.querySelector(adSrting);
             if(td1==null){
                 alert('Please Select A Cell');
@@ -230,8 +250,11 @@ class Sheet {
                 mainInput.removeEventListener('input', bindchangeInput);
                 return;
             }
+            console.log('td1',td1);
             td1.classList.add('black-color');
             var tdInput = document.querySelector(adSrting1);
+            //console.log(tdInput);
+            //console.log(this.dataObj);
             mainInput.value = tdInput.value;
             td1.innerHTML = tdInput.value;
             mainInput.focus();
@@ -263,6 +286,7 @@ class Sheet {
 
 
                     mainInput.value = '';
+                    //mainInput.blur();
 
                     this.updateTDs();
 
@@ -273,12 +297,15 @@ class Sheet {
                     });
                     td1.setAttribute('class','');
 
+                    //td = null;
 
                     mainTable.addEventListener('click',bindTdClick);
                     mainInput.addEventListener('click',bindInputClick);
+                    //td=null;
                     mainInput.removeEventListener('input', bindchangeInput);
                     mainInput.removeEventListener('blur',bindmainInputCellClick);
 
+                    //mainInput.removeEventListener('click',bindInputClick);
                     td1 = null;
                     tdAttr = null;
                     mainInput.blur();
@@ -291,6 +318,7 @@ class Sheet {
 
                     cellLetter.classList.remove("cell-selected");
                     cellNumber.classList.remove("cell-selected");
+                    //this.dataObj[cell] = e.target.value;
 
                     if (e.target.value.charAt(0) == "=") {
                         if(this.dataObj[tdAttr] == undefined) td1.innerHTML = '';
@@ -302,6 +330,7 @@ class Sheet {
                     }
 
                     mainInput.value = '';
+                    //mainInput.blur();
 
                     this.updateTDs();
 
@@ -315,9 +344,11 @@ class Sheet {
 
                     mainTable.addEventListener('click',bindTdClick);
                     mainInput.addEventListener('click',bindInputClick);
+                    //td=null;
                     mainInput.removeEventListener('input', bindchangeInput);
                     mainInput.removeEventListener('blur',bindmainInputCellClick);
 
+                    //mainInput.removeEventListener('click',bindInputClick);
                     td1 = null;
                     tdAttr = null;
                     mainInput.blur();
@@ -414,7 +445,8 @@ class Sheet {
 
     getSheetData(){
 
-        
+        /*this.sheetList = {1:'Sher', 2:'Sheet2',3:'Sheet3',4:'ss'};
+         console.log(this.sheetList);*/
         var localSheet = 'dataObj'+this.id;
         if(localStorage[localSheet]){
             this.dataObj = JSON.parse(localStorage[localSheet]);
@@ -425,6 +457,7 @@ class Sheet {
                 this.dataObj = data;
             }).bind(this));
         }
+        //console.log(this.dataObj);
     }
 
     getJSONData(url, callback){
@@ -435,6 +468,7 @@ class Sheet {
                 if (httpRequest.status === 200) {
                     var data = JSON.parse(httpRequest.responseText);
                     if (callback) callback(data);
+                    console.log('data',data);
 
                 }
             }
@@ -453,6 +487,7 @@ class Sheet {
     }
 
     renderSheet() {
+        //console.log(this.dataObj);
         var mainTable = document.createElement('table');
         mainTable.className = 'main-table';
         var divTable = document.querySelector('div[data-name="table"]');
@@ -512,9 +547,13 @@ class Sheet {
         if (cell==undefined)return;
         if (cell.charAt(0) != "=")return;
         var value = cell.toUpperCase();
+        //console.log("tt",value);
 
 
-        
+        //console.log(value);    console.log(cell);
+        //var value = '=s1_A1-s1_B1-s1_C1-s1_D1'.substring(1);
+        //value.lastIndexOf('=')
+        //var value = value.substring(value.lastIndexOf('=')+1);
         var value = value.substring(1);
         if (value.length==0)return;
         var flag;
@@ -524,7 +563,9 @@ class Sheet {
 
         }
 
-        
+        //console.log(value);
+        //console.log(value);
+        //var indexPlus = '+',indexMinus = '-', indexDev= '/', indexMult = '*';
         var i=0;
         var newValue = '';
         dodo: do {
@@ -535,11 +576,15 @@ class Sheet {
             var foundMult = value.indexOf('*');
             if (value.charAt(0) == "=") value = value.substring(1);
             ifif: if(foundPlus==-1&&foundMinus==-1&&foundDev==-1&&foundMult==-1){
+                //var tt ='s1_'+(value);
                 var tt1 = this.dataObj[value];//localStorage[tt];
                 tt1 = (tt1+'').toLocaleUpperCase();
+                //console.log('IIIIIIII',tt1);
                 if (tt1.charAt(0) == "=") {
                     var adRecursion =  this.calcCell(tt1);
                     newValue+=adRecursion;
+                    //console.log('TTTTTTTTTT',newValue);
+                    // value=value.substring(foundPlus+1);
                     break ifif;
                 }
 
@@ -566,22 +611,38 @@ class Sheet {
 
 
 
+            //console.log(foundPlus,foundMinus);
             if(foundPlus == -1)foundPlus=100;
             if(foundMinus == -1)foundMinus=100;
             if(foundDev == -1)foundDev=100;
             if(foundMult == -1)foundMult=100;
-           
+
+            //console.log('----------');
+            //console.log(value);
+            //console.log(newValue);
             forfor: if(foundPlus<foundMinus&&foundPlus<foundDev&&foundPlus<foundMult){
+                //var tt ='s1_'+(value.substring(0,foundPlus));
                 var tt1 = this.dataObj[value.substring(0,foundPlus)];//localStorage[tt];
                 tt1 = (tt1+'').toLocaleUpperCase();
+                //console.log('IIIIIIII',tt1);
                 if (tt1.charAt(0) == "=") {
                     var adRecursion =  this.calcCell(tt1);
                     newValue+=adRecursion+'+';
+                    //console.log('TTTTTTTTTT',newValue);
                     value=value.substring(foundPlus+1);
                     break forfor;
                 }
 
-                
+                /*for(var key2 in this.dataObj){
+
+                    if(this.dataObj[key2]==undefined)this.dataObj[key2]=0;
+                    //var s2='s1_'+value.substring(0,foundPlus);
+                    if(key2==value.substring(0,foundPlus)){
+                        newValue+=this.dataObj[key2]+'+';
+                    }
+
+
+                }*/
 
                 if(value.substring(0,foundPlus).search(/^[A-Z]{1,4}\d{1,4}$/)!=-1 && tt1=='UNDEFINED'){
                     newValue+=0+'+';
@@ -597,10 +658,13 @@ class Sheet {
                     newValue+=this.dataObj[value.substring(0,foundPlus)]+'+';
                 }
 
-               
+                /*if(!isNaN(value.substring(0,foundPlus)))  {
+                    newValue+=value.substring(0,foundPlus)+'+';
+                }*/
                 value=value.substring(foundPlus+1);
             }
             else if (foundMinus<foundPlus&&foundMinus<foundDev&&foundMinus<foundMult){
+                //var tt ='s1_'+(value.substring(0,foundMinus));
                 var tt1 = this.dataObj[value.substring(0,foundMinus)];//localStorage[tt];
                 tt1 = (tt1+'').toLocaleUpperCase();
                 if (tt1.charAt(0) == "=") {
@@ -610,7 +674,17 @@ class Sheet {
                     break forfor;
                 }
 
-                
+                /*for(var key3 in this.dataObj){
+                    if(this.dataObj[key3]==undefined)this.dataObj[key3]=0;
+                    //var s3='s1_'+value.substring(0,foundMinus);
+                    if(key3==value.substring(0,foundMinus)){
+                        //if(key3==(value.substring(0,foundMinus))){
+                        newValue+=this.dataObj[key3]+'-';
+                    }
+                }
+                if(!isNaN(value.substring(0,foundMinus)))  {
+                    newValue+=value.substring(0,foundMinus)+'-';
+                }*/
                 if(value.substring(0,foundMinus).search(/^[A-Z]{1,4}\d{1,4}$/)!=-1 && tt1=='UNDEFINED'){
                     newValue+=0+'-';
                 }
@@ -638,7 +712,15 @@ class Sheet {
                     break forfor;
                 }
 
-                
+                /*for(var key4 in this.dataObj){
+                    if(this.dataObj[key4]==undefined)this.dataObj[key4]=0;
+                    if(key4==value.substring(0,foundMult)){
+                        newValue+=this.dataObj[key4]+'*';
+                    }
+                }
+                if(!isNaN(value.substring(0,foundMult)))  {
+                    newValue+=value.substring(0,foundMult)+'*';
+                }*/
                 if(value.substring(0,foundMult).search(/^[A-Z]{1,4}\d{1,4}$/)!=-1 && tt1=='UNDEFINED'){
                     newValue+=0+'*';
                 }
@@ -666,7 +748,17 @@ class Sheet {
                     break forfor;
                 }
 
-                
+                /*for(var key4 in this.dataObj){
+                    if(this.dataObj[key4]==undefined)this.dataObj[key4]=0;
+                    //var s4='s1_'+value.substring(0,foundDev);
+                    if(key4==value.substring(0,foundDev)){
+                        //if(key3==(value.substring(0,foundDev))){
+                        newValue+=this.dataObj[key4]+'/';
+                    }
+                }
+                if(!isNaN(value.substring(0,foundDev)))  {
+                    newValue+=value.substring(0,foundDev)+'/';
+                }*/
                 if(value.substring(0,foundDev).search(/^[A-Z]{1,4}\d{1,4}$/)!=-1 && tt1=='UNDEFINED'){
                     newValue+=0+'/';
                 }
@@ -693,19 +785,27 @@ class Sheet {
 
 
         newValue = newValue.replace(/--/gi, "+");
+        //console.log(newValue);
         if(flag == true) newValue='-'+newValue;
 
         try {
-            
+            //console.log('EVAL',newValue);
+            //adRecursion =eval(newValue);
             return eval(newValue);
-            
+            //console.log(newValue);
+            //return Math.eval(newValue);
+
+
         } catch(err){
+            //console.log('!!!!!',newValue);
             return 'Error';
+
         }
+        //return elm.value;
 
     }
 
-    addNewRowsAndColumns(){
+    addRowsAndCells(){
 
 
         var trCount = document.querySelectorAll('[data-name="tcol"] div');
@@ -723,6 +823,7 @@ class Sheet {
             divTNum.appendChild(fragmentNum);
 
             var tableBody = document.querySelector('.main-table tbody');
+            // var fragmentRows = document.createDocumentFragment();
             for(var i=0;i<10;i++){
                 var tableRow1 = tableBody.insertRow(-1);
                 for(var k=0; k<tdCount.length;k++){
