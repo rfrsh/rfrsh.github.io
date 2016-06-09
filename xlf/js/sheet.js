@@ -125,6 +125,7 @@ class Sheet {
                             //if()
 
                             if (clCell == undefined)return;
+                            if (clCell == '')return;
                             //if (input.value=='')return;
 
                             if(input.value.charAt(input.value.length-1).search(/\+|\-|\*|\/|\=/)!=0){
@@ -399,6 +400,7 @@ class Sheet {
 
 
                 if(clCell==undefined)return;
+                if (clCell == '')return;
 
                 if(mainInput.value.charAt(mainInput.value.length-1).search(/\+|\-|\*|\/|\=/)!=0){
                     var foundMin = mainInput.value.lastIndexOf('+');
